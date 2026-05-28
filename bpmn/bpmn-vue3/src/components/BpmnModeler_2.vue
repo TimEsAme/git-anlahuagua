@@ -147,26 +147,27 @@ onBeforeUnmount(() => {
 .jojo {
   display: flex;
   flex-direction: column;
-  background-color: firebrick;
+  // background-color: firebrick;
 }
 .container {
   padding: 20px;
   width: 100%;
   height: calc(100vh);
-  background-color: tomato;
+  // background-color: tomato;
 }
 .canvas {
   position: relative;
   width: 100%;
   height: 600px;
-  // border: 1px solid teal;
-  background-color: orange;
+  border: 2px solid #000;
+  // background-color: orange;
 }
 .panel {
   position: absolute;
   right: 0;
   top: 0;
   width: 300px;
+  height: 350px;
 }
 
 /* 按钮组 */
@@ -175,7 +176,7 @@ onBeforeUnmount(() => {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding-left: 7px;
+  padding-left: 20px;
 }
 
 /* 通用按钮样式 */
@@ -188,7 +189,7 @@ onBeforeUnmount(() => {
   padding: 8px 16px;
   border: none;
   border-radius: 6px;
-  background-color: #409eff;
+  background-color: #000;
   color: #fff;
   font-size: 14px;
   cursor: pointer;
@@ -198,7 +199,7 @@ onBeforeUnmount(() => {
 /* hover */
 .toolbar-btn:hover,
 .upload-btn:hover {
-  background-color: #66b1ff;
+  background-color: #656565;
 }
 
 /* 隐藏 input */
