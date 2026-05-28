@@ -7,8 +7,12 @@
     <!-- 按钮组 -->
     <div class="button-group">
       <button class="toolbar-btn" @click="handleNew">新建</button>
+
+      <!-- 导入文件 -->
       <label class="upload-btn">
         <span>导入 XML</span>
+
+        <!-- 选择本地 BPMN/XML 文件 -->
         <input
           type="file"
           accept=".xml .bpmn"
@@ -16,12 +20,18 @@
           @change="handleImport"
         />
       </label>
+
+      <!-- 导出 XML -->
       <button class="toolbar-btn" @click="handleExportXML">导出 XML</button>
+
+      <!-- 导出 SVG -->
       <button class="toolbar-btn" @click="handleExportSVG">导出 SVG</button>
     </div>
+
     <!-- 内容区 -->
     <div class="container">
       <div ref="cavansDom" class="canvas">
+        <!-- 属性面板 -->
         <div id="js-properties-panel" class="panel"></div>
       </div>
     </div>
@@ -30,29 +40,37 @@
 
 <script lang="ts" setup>
 import { onBeforeUnmount, onMounted, ref } from "vue";
+// 默认 BPMN XML 数据
 import { xmlStr } from "@/mock/xmlStr";
+// BPMN 编辑器核心
 import BpmnModeler from "bpmn-js/lib/Modeler";
+// 画布类型
 import type Canvas from "diagram-js/lib/core/Canvas";
+// BPMN 基础样式
 import "bpmn-js/dist/assets/bpmn-js.css";
+// diagram-js 样式
 import "bpmn-js/dist/assets/diagram-js.css";
+// BPMN 图标样式
 import "bpmn-js/dist/assets/bpmn-font/css/bpmn.css";
+// 属性面板模块
 import {
   BpmnPropertiesPanelModule,
   BpmnPropertiesProviderModule,
 } from "bpmn-js-properties-panel";
-
-// 加入属性控制面板的样式
+// 属性面板样式
 import "@bpmn-io/properties-panel/assets/properties-panel.css";
-
 // 汉化模块
 import customTranslateModule from "@/additional-modules/Translate";
 
+// BPMN 挂载容器
 const cavansDom = ref<HTMLElement | null>(null);
 
+// BPMN 实例
 let modeler: BpmnModeler | null = null;
 
-// 新建
+// 新建流程图
 async function handleNew() {
+  // 空白 BPMN XML
   const emptyXml = `<?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                   xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
@@ -64,46 +82,74 @@ async function handleNew() {
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1"/>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>`;
+  // 加载 XML
   await loadXml(emptyXml);
+  // 自动缩放到可视区域
   const canvans = modeler?.get<Canvas>("canvas");
   canvans?.zoom("fit-viewport");
 }
-// 导出XML
+
+// 导出 XML
 async function handleExportXML() {
   if (!modeler) return;
-  const { xml } = await modeler.saveXML({ format: true });
+  // 获取 XML 数据
+  const { xml } = await modeler.saveXML({
+    format: true,
+  });
+  // 下载 XML 文件
   download("jojo.xml", xml as string, "application/xml");
 }
+
 // 导出 SVG
 async function handleExportSVG() {
   if (!modeler) return;
+  // 获取 SVG 数据
   const { svg } = await modeler.saveSVG();
+  // 下载 SVG 文件
   download("jojo.svg", svg, "image/svg+xml");
 }
-// 导入本地 .bpmn
+
+// 导入本地 BPMN/XML 文件
 async function handleImport(e: Event) {
   const input = e.target as HTMLInputElement;
+  // 获取用户选择的文件
   const file = input.files?.[0];
   if (!file) return;
+  // 读取文件内容
   const text = await file.text();
+  // 加载 XML
   await loadXml(text);
+  // 自动缩放
   const canvas = modeler!.get<Canvas>("canvas");
   canvas.zoom("fit-viewport");
+  // 清空 input
   input.value = "";
 }
-// 下载辅助
+// 下载辅助函数
 function download(filename: string, data: string, mime: string) {
-  const blob = new Blob([data], { type: mime });
+  // 创建 Blob 对象
+  const blob = new Blob([data], {
+    type: mime,
+  });
+  // 生成临时 URL
   const url = URL.createObjectURL(blob);
+  // 创建 a 标签
   const a = document.createElement("a");
+  // 设置下载地址
   a.href = url;
+  // 设置文件名
   a.download = filename;
+  // 触发下载
   a.click();
+  // 释放 URL
   URL.revokeObjectURL(url);
 }
+
+// 加载 BPMN XML
 async function loadXml(xml: string) {
   if (!modeler) return;
   try {
+    // 导入 XML
     await modeler.importXML(xml);
   } catch (err) {
     console.error("无法导入 BPMN 2.0 XML", err);
@@ -112,29 +158,51 @@ async function loadXml(xml: string) {
 
 onMounted(() => {
   if (!cavansDom.value) return;
+  // 创建 BPMN 编辑器实例
   modeler = new BpmnModeler({
     // 指定挂载容器
     container: cavansDom.value,
-    // 添加控制面板
-    //添加控制板
+    // 属性面板配置
     propertiesPanel: {
       parent: "#js-properties-panel",
     },
+    // 额外模块
     additionalModules: [
+      // 属性面板
       BpmnPropertiesPanelModule,
+      // 属性提供器
       BpmnPropertiesProviderModule,
+      // 汉化模块
       customTranslateModule,
     ],
   });
+
+  // 监听事件
+  modelerListener();
+
+  // 加载默认 XML
   loadXml(xmlStr);
+  // 自动缩放
   const canvans = modeler.get<Canvas>("canvas");
   canvans.zoom("fit-viewport");
 });
 
 onBeforeUnmount(() => {
+  // 销毁实例
   modeler?.destroy();
+  // 清空引用
   modeler = null;
 });
+
+function modelerListener() {
+  if (!modeler) return;
+  const event = ["shape.added", "shape.removed", "element.move.end"];
+  event.forEach((e) => {
+    modeler?.on(e, function (e) {
+      console.log(e);
+    });
+  });
+}
 </script>
 
 <style scoped lang="scss">
@@ -149,12 +217,14 @@ onBeforeUnmount(() => {
   flex-direction: column;
   // background-color: firebrick;
 }
+
 .container {
   padding: 20px;
   width: 100%;
   height: calc(100vh);
   // background-color: tomato;
 }
+
 .canvas {
   position: relative;
   width: 100%;
@@ -162,6 +232,7 @@ onBeforeUnmount(() => {
   border: 2px solid #000;
   // background-color: orange;
 }
+
 .panel {
   position: absolute;
   right: 0;
@@ -196,13 +267,13 @@ onBeforeUnmount(() => {
   transition: background-color 0.2s;
 }
 
-/* hover */
+/* hover 效果 */
 .toolbar-btn:hover,
 .upload-btn:hover {
   background-color: #656565;
 }
 
-/* 隐藏 input */
+/* 隐藏文件选择框 */
 .upload-input {
   display: none;
 }
