@@ -31,10 +31,20 @@ function resolvePromise(prom, x) {
       );
       return;
     }
+    queueMicrotask(() => {
+      x.then(
+        (data) => {
+          resolvePromise(prom, data);
+        },
+        (err) => {
+          rejectPromise(prom, err);
+        },
+      );
+    });
   } else {
     prom._state = "fulfilled";
     prom._data = x;
-  } 
+  }
 }
 
 class MyPromise {
@@ -64,9 +74,9 @@ const p = new MyPromise((resolve, reject) => {
   // }, 1000);
 
   // 失败
-  // reject(222);
+  reject(222);
 });
 
-setTimeout(() => {
-  console.log(p);
-}, 2000);
+// setTimeout(() => {
+//   console.log(p);
+// }, 2000);
