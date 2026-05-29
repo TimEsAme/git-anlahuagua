@@ -1,0 +1,22 @@
+.bpmn-icon-task.red {
+  color: #cc0000 !important;
+}
+
+.bpmn-icon-task.blue {
+  color: #0000cc !important;
+}
+
+.icon-custom {
+  border-radius: 50%;
+  background-size: 65%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.icon-custom.jojo-task {
+  background-image: url("../assets/task.png");
+}
+
+.djs-palette {
+  width: 94px;
+}

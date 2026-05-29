@@ -1,0 +1,22 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      inherits-browser:
+        specifier: ^0.1.0
+        version: 0.1.0
+
+packages:
+
+  inherits-browser@0.1.0:
+    resolution: {integrity: sha512-CJHHvW3jQ6q7lzsXPpapLdMx5hDpSF3FSh45pwsj6bKxJJ8Nl8v43i5yXnr3BdfOimGHKyniewQtnAIp3vyJJw==}
+
+snapshots:
+
+  inherits-browser@0.1.0: {}
