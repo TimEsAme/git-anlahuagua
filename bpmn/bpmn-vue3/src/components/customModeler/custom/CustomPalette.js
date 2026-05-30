@@ -34,14 +34,17 @@ PaletteProvider.$inject = [
 
 PaletteProvider.prototype.getPaletteEntries = function () {
   const {
+    bpmnFactory,
+    palette,
     create,
     elementFactory,
-    translate,
     spaceTool,
     lassoTool,
     handTool,
     globalConnect,
+    translate,
   } = this;
+
 
   function createTask() {
     return function (event) {

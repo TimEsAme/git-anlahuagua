@@ -28,9 +28,9 @@ import {
  * @param {Translate} translate
  */
 export default function PaletteProvider(
-    palette, create, elementFactory,
-    spaceTool, lassoTool, handTool,
-    globalConnect, translate) {
+  palette, create, elementFactory,
+  spaceTool, lassoTool, handTool,
+  globalConnect, translate) {
 
   this._palette = palette;
   this._create = create;
@@ -58,16 +58,16 @@ PaletteProvider.$inject = [
 /**
  * @return {PaletteEntries}
  */
-PaletteProvider.prototype.getPaletteEntries = function() {
+PaletteProvider.prototype.getPaletteEntries = function () {
 
   var actions = {},
-      create = this._create,
-      elementFactory = this._elementFactory,
-      spaceTool = this._spaceTool,
-      lassoTool = this._lassoTool,
-      handTool = this._handTool,
-      globalConnect = this._globalConnect,
-      translate = this._translate;
+    create = this._create,
+    elementFactory = this._elementFactory,
+    spaceTool = this._spaceTool,
+    lassoTool = this._lassoTool,
+    handTool = this._handTool,
+    globalConnect = this._globalConnect,
+    translate = this._translate;
 
   function createAction(type, group, className, title, options) {
 
@@ -102,9 +102,9 @@ PaletteProvider.prototype.getPaletteEntries = function() {
       parent: subProcess
     });
 
-    create.start(event, [ subProcess, startEvent ], {
+    create.start(event, [subProcess, startEvent], {
       hints: {
-        autoSelect: [ subProcess ]
+        autoSelect: [subProcess]
       }
     });
   }
@@ -119,7 +119,7 @@ PaletteProvider.prototype.getPaletteEntries = function() {
       className: 'bpmn-icon-hand-tool',
       title: translate('Activate hand tool'),
       action: {
-        click: function(event) {
+        click: function (event) {
           handTool.activateHand(event);
         }
       }
@@ -129,7 +129,7 @@ PaletteProvider.prototype.getPaletteEntries = function() {
       className: 'bpmn-icon-lasso-tool',
       title: translate('Activate lasso tool'),
       action: {
-        click: function(event) {
+        click: function (event) {
           lassoTool.activateSelection(event);
         }
       }
@@ -139,7 +139,7 @@ PaletteProvider.prototype.getPaletteEntries = function() {
       className: 'bpmn-icon-space-tool',
       title: translate('Activate create/remove space tool'),
       action: {
-        click: function(event) {
+        click: function (event) {
           spaceTool.activateSelection(event);
         }
       }
@@ -149,7 +149,7 @@ PaletteProvider.prototype.getPaletteEntries = function() {
       className: 'bpmn-icon-connection-multi',
       title: translate('Activate global connect tool'),
       action: {
-        click: function(event) {
+        click: function (event) {
           globalConnect.start(event);
         }
       }
