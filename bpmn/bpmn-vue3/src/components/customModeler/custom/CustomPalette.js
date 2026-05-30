@@ -3,19 +3,45 @@ export default function PaletteProvider(
   palette,
   create,
   elementFactory,
+  spaceTool,
+  lassoTool,
+  handTool,
+  globalConnect,
   translate,
 ) {
   this.bpmnFactory = bpmnFactory;
   this.palette = palette;
   this.create = create;
   this.elementFactory = elementFactory;
+  this.spaceTool = spaceTool;
+  this.lassoTool = lassoTool;
+  this.handTool = handTool;
+  this.globalConnect = globalConnect;
   this.translate = translate;
-
   palette.registerProvider(this);
 }
+PaletteProvider.$inject = [
+  "bpmnFactory",
+  "palette",
+  "create",
+  "elementFactory",
+  "spaceTool",
+  "lassoTool",
+  "handTool",
+  "globalConnect",
+  "translate",
+];
 
 PaletteProvider.prototype.getPaletteEntries = function () {
-  const { create, elementFactory, translate } = this;
+  const {
+    create,
+    elementFactory,
+    translate,
+    spaceTool,
+    lassoTool,
+    handTool,
+    globalConnect,
+  } = this;
 
   function createTask() {
     return function (event) {
@@ -65,11 +91,3 @@ PaletteProvider.prototype.getPaletteEntries = function () {
     },
   };
 };
-
-PaletteProvider.$inject = [
-  "bpmnFactory",
-  "palette",
-  "create",
-  "elementFactory",
-  "translate",
-];

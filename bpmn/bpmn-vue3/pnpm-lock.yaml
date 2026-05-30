@@ -20,6 +20,9 @@ importers:
       diagram-js:
         specifier: ^15.14.0
         version: 15.14.0
+      inherits-browser:
+        specifier: ^0.1.0
+        version: 0.1.0
       tiny-svg:
         specifier: ^4.1.4
         version: 4.1.4
