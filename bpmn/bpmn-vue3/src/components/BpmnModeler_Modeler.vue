@@ -33,6 +33,20 @@
       <div ref="cavansDom" class="canvas">
         <!-- 属性面板 -->
         <div id="js-properties-panel" class="panel"></div>
+        <el-dialog
+          v-model="bpmnStore.nodeVisible"
+          title="Tips"
+          width="500"
+          :before-close="handleClose"
+        >
+          <div>{{ bpmnStore.nodeInfo.id }}</div>
+          <div>{{ bpmnStore.nodeInfo.type }}</div>
+          <template #footer>
+            <div class="dialog-footer">
+              <el-button type="primary" @click="handleClose"> 关闭 </el-button>
+            </div>
+          </template>
+        </el-dialog>
       </div>
     </div>
   </div>
@@ -66,6 +80,13 @@ import type ElementRegistry from "diagram-js/lib/core/ElementRegistry";
 import type EventBus from "diagram-js/lib/core/EventBus";
 
 import CustomModeler from "./customModeler";
+
+import { useBpmnStore } from "@/store/bpmn";
+const bpmnStore = useBpmnStore();
+
+const handleClose = () => {
+  bpmnStore.toggleNodeVisible(false);
+};
 
 // BPMN 挂载容器
 const cavansDom = ref<HTMLElement | null>(null);

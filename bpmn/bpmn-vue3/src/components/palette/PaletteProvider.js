@@ -178,6 +178,8 @@ PaletteProvider.prototype.getPaletteEntries = function () {
       'bpmn:Task', 'activity', 'bpmn-icon-task',
       translate('Create task')
     ),
+
+
     'create.data-object': createAction(
       'bpmn:DataObjectReference', 'data-object', 'bpmn-icon-data-object',
       translate('Create data object reference')

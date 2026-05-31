@@ -1,5 +1,5 @@
 import BaseRenderer from "diagram-js/lib/draw/BaseRenderer"; // 引入默认的renderer
-import { customElements, customConfig } from "@/components/utils/utils"; // 引入自定义元素和配置
+import { customElements, customConfig } from "../utils/util"; // 引入自定义元素和配置
 import {
   append as svgAppend,
   attr as svgAttr,
@@ -24,27 +24,33 @@ export default class CustomRenderer extends BaseRenderer {
   }
 
   drawShape(parentNode, element) {
-    const shape = this.bpmnRenderer.drawShape(parentNode, element);
+    // 使用svg画
+    // const type = element.type; // 获取到类型
+    // console.log(type)
+    // if (customElements.includes(type)) {
+    //   const { url, attr } = customConfig[type];
+    //   const customIcon = svgCreate("image", {
+    //     // 在这里创建了一个image
+    //     ...attr,
+    //     href: url,
+    //   });
+    //   element["width"] = attr.width;
+    //   element["height"] = attr.height;
+    //   svgAppend(parentNode, customIcon);
+    //   return customIcon;
+    // }
+    // const shape = this.bpmnRenderer.drawShape(parentNode, element);
+    // return shape;
 
+    // 自己画
+    const shape = this.bpmnRenderer.drawShape(parentNode, element);
     if (is(element, "bpmn:Task")) {
       // 当元素类型是 bpmn:Task 时
-      const rect = drawRect(parentNode, 100, 80, 2, "#52B415"); // 创建一个带绿色边框的矩形
-
+      const rect = drawRect(parentNode, 100, 80, 2, "#8a15b4");
       prependTo(rect, parentNode);
-
       svgRemove(shape);
-
       return shape;
     }
-
-    // 其他不属于 bpmn:Task 的元素，如开始事件
-    // 也创建一个 红色小矩形
-    const rect = drawRect(parentNode, 30, 20, TASK_BORDER_RADIUS, "#cc0000");
-    // 放置于左上角;
-    svgAttr(rect, {
-      transform: "translate(-20, -10)",
-    });
-
     return shape;
   }
 

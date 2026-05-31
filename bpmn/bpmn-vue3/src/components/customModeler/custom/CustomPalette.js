@@ -1,96 +1,76 @@
+import {
+  customFlowAction,
+  customShapeAction,
+  batchCreateCustom,
+} from "@/utils/util";
+
 export default function PaletteProvider(
   bpmnFactory,
   palette,
   create,
   elementFactory,
-  spaceTool,
-  lassoTool,
-  handTool,
-  globalConnect,
   translate,
+  globalConnect
 ) {
   this.bpmnFactory = bpmnFactory;
   this.palette = palette;
   this.create = create;
   this.elementFactory = elementFactory;
-  this.spaceTool = spaceTool;
-  this.lassoTool = lassoTool;
-  this.handTool = handTool;
-  this.globalConnect = globalConnect;
   this.translate = translate;
+  this.globalConnect = globalConnect;
+
   palette.registerProvider(this);
 }
+
+PaletteProvider.prototype.getPaletteEntries = function () {
+  let actions = {};
+  const { create, elementFactory, translate, globalConnect } = this;
+
+  function createConnect(type, group, className, title, options) {
+    return {
+      group,
+      className,
+      title: translate("新增" + title),
+      action: {
+        click: function (event) {
+          globalConnect.toggle(event);
+        },
+      },
+    };
+  }
+
+  function createAction(type, group, className, title, options) {
+    function createListener(event) {
+      const shape = elementFactory.createShape(
+        Object.assign({ type: type }, options)
+      );
+      create.start(event, shape);
+    }
+
+    return {
+      group,
+      className,
+      title: translate("新增" + title),
+      action: {
+        dragstart: createListener,
+        click: createListener,
+      },
+    };
+  }
+
+  Object.assign(actions, {
+    ...batchCreateCustom(customShapeAction, createAction),
+    ...batchCreateCustom(customFlowAction, createConnect),
+  });
+
+  return actions;
+};
+
 PaletteProvider.$inject = [
   "bpmnFactory",
   "palette",
   "create",
   "elementFactory",
-  "spaceTool",
-  "lassoTool",
-  "handTool",
-  "globalConnect",
   "translate",
+  "globalConnect",
 ];
-
-PaletteProvider.prototype.getPaletteEntries = function () {
-  const {
-    bpmnFactory,
-    palette,
-    create,
-    elementFactory,
-    spaceTool,
-    lassoTool,
-    handTool,
-    globalConnect,
-    translate,
-  } = this;
-
-
-  function createTask() {
-    return function (event) {
-      const shape = elementFactory.createShape({ type: "bpmn:Task" });
-      create.start(event, shape);
-    };
-  }
-
-  return {
-    "hand-tool": {
-      group: "tools",
-      className: "bpmn-icon-hand-tool",
-      title: translate("Activate hand tool"),
-      action: {
-        click: function (event) {
-          handTool.activateHand(event);
-        },
-      },
-    },
-
-    "create.jojo-task-red": {
-      group: "model",
-      className: "bpmn-icon-task red",
-      title: translate("创建一个类型为jojo-task-red的任务节点"),
-      action: {
-        dragstart: createTask(),
-        click: createTask(),
-      },
-    },
-    "create.jojo-task-blue": {
-      group: "model",
-      className: "bpmn-icon-task blue",
-      title: translate("创建一个类型为jojo-task-blue的任务节点"),
-      action: {
-        dragstart: createTask(),
-        click: createTask(),
-      },
-    },
-    "create.jojo-task-icon": {
-      group: "model",
-      className: "icon-custom jojo-task",
-      title: translate("创建一个类型为jojo-task-icon的任务节点"),
-      action: {
-        dragstart: createTask(),
-        click: createTask(),
-      },
-    },
-  };
-};

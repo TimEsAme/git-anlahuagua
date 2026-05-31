@@ -55,7 +55,7 @@ export const xmlStr = `
       </bpmndi:BPMNEdge>
 
       <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
-        <omgdi:waypoint x="340" y="118" />
+        <omgdi:waypoint x="290" y="118" />
         <omgdi:waypoint x="400" y="118" />
       </bpmndi:BPMNEdge>
 

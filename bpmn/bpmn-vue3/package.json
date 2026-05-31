@@ -13,7 +13,9 @@
     "bpmn-js": "^18.16.1",
     "bpmn-js-properties-panel": "^5.58.0",
     "diagram-js": "^15.14.0",
+    "element-plus": "^2.14.1",
     "inherits-browser": "^0.1.0",
+    "pinia": "^3.0.4",
     "tiny-svg": "^4.1.4",
     "vue": "^3.5.34"
   },
