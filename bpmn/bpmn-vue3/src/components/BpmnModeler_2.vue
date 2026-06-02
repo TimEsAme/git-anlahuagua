@@ -30,10 +30,9 @@
 
     <!-- 内容区 -->
     <div class="container">
-      <div ref="cavansDom" class="canvas">
-        <!-- 属性面板 -->
-        <div id="js-properties-panel" class="panel"></div>
-      </div>
+      <div ref="cavansDom" class="canvas"></div>
+      <!-- 属性面板 -->
+      <div id="js-properties-panel" class="panel"></div>
     </div>
   </div>
 </template>
@@ -56,11 +55,27 @@ import "bpmn-js/dist/assets/bpmn-font/css/bpmn.css";
 import {
   BpmnPropertiesPanelModule,
   BpmnPropertiesProviderModule,
+  CamundaPlatformPropertiesProviderModule,
 } from "bpmn-js-properties-panel";
 // 属性面板样式
-import "@bpmn-io/properties-panel/assets/properties-panel.css";
+import "bpmn-js/dist/assets/diagram-js.css";
+import "bpmn-js/dist/assets/bpmn-js.css";
+import "@bpmn-io/properties-panel/dist/assets/properties-panel.css";
+
 // 汉化模块
 import customTranslateModule from "@/additional-modules/Translate";
+//
+import CamundaBpmnModdle from "camunda-bpmn-moddle/resources/camunda.json";
+import SelfDescriptor from "./SelfDescriptor.json";
+
+// 类型
+import type ElementRegistry from "diagram-js/lib/core/ElementRegistry";
+import type EventBus from "diagram-js/lib/core/EventBus";
+import type Modeling from "bpmn-js/lib/features/modeling/Modeling";
+import type { Moddle } from "bpmn-js/lib/BaseViewer";
+
+import magicPropertiesProviderModule from "@/components/propertiesPanelExtension/provider/magic";
+import magicModdleDescriptor from "@/components/propertiesPanelExtension/descriptiors/magic.json";
 
 // BPMN 挂载容器
 const cavansDom = ref<HTMLElement | null>(null);
@@ -68,6 +83,115 @@ const cavansDom = ref<HTMLElement | null>(null);
 // BPMN 实例
 let modeler: BpmnModeler | null = null;
 
+onMounted(async () => {
+  if (!cavansDom.value) return;
+  // 创建 BPMN 编辑器实例
+  modeler = new BpmnModeler({
+    // 指定挂载容器
+    container: cavansDom.value,
+    // 属性面板配置
+    propertiesPanel: {
+      parent: "#js-properties-panel",
+    },
+    moddleExtensions: {
+      camunda: CamundaBpmnModdle,
+      jojo: SelfDescriptor,
+      magic: magicModdleDescriptor,
+    },
+    // 额外模块
+    additionalModules: [
+      // 属性面板
+      BpmnPropertiesPanelModule,
+      // 属性提供器
+      BpmnPropertiesProviderModule,
+
+      // Camunda提供的右侧边栏属性
+      // CamundaPlatformPropertiesProviderModule,
+
+      // 自定义右侧边栏属性
+      magicPropertiesProviderModule,
+      // 汉化模块
+      customTranslateModule,
+    ],
+  });
+
+  // 监听事件
+  // modelerListener();
+  // eventBusListener();
+
+  // 加载默认 XML
+  await loadXml(xmlStr);
+  // 自动缩放
+  const canvans = modeler.get<Canvas>("canvas");
+  canvans.zoom("fit-viewport");
+});
+
+onBeforeUnmount(() => {
+  // 销毁实例
+  modeler?.destroy();
+  // 清空引用
+  modeler = null;
+});
+
+// 加载 BPMN XML
+async function loadXml(xml: string) {
+  if (!modeler) return;
+  try {
+    await modeler.importXML(xml);
+  } catch (e) {
+    console.error("importXML error:", e);
+  }
+
+  modeler!.on("element.click", function (_event, eventObj) {
+    const moddle = modeler!.get<Moddle>("moddle");
+
+    // 自定义属性1
+    const attrOne = moddle!.create("se:AttrOne", {
+      name: "testAttrOne",
+      values: [],
+    });
+    // 自定义属性子属性
+    const attrOneProp = moddle!.create("se:AttrOneProp", {
+      propName: "propName1",
+      value: "propValue1",
+    });
+    // 自定义属性2
+    const attrTwo = moddle!.create("se:AttrTwo", { value: "testAttrTwo" });
+    // 原生属性Properties
+    const props = moddle!.create("camunda:Properties", { values: [] });
+    // 原生属性Properties的子属性
+    const propItem = moddle.create("camunda:Property", {
+      name: "原生子属性name",
+      values: "原生子属性value",
+    });
+    // 原生扩展属性数组
+    const extensions = moddle!.create("bpmn:ExtensionElements", { values: [] });
+
+    // 开始节点插入原生属性
+    if (eventObj.element.type === "bpmn:StartEvent") {
+      props.values.push(propItem);
+      extensions.values.push(props);
+    }
+    // 任务节点插入多种属性
+    if (eventObj.element.type === "bpmn:UserTask") {
+      props.values.push(propItem, propItem);
+
+      attrOne.values.push(attrOneProp);
+
+      extensions.values.push(props, attrOne, attrTwo);
+    }
+    // root插入自定义属性
+    if (eventObj.element.type === "bpmn:Process") {
+      attrOne.values.push(attrOneProp, attrOneProp);
+
+      extensions.values.push(attrOne);
+    }
+
+    modeler!.get<Modeling>("modeling").updateProperties(eventObj.element, {
+      extensionElements: extensions,
+    });
+  });
+}
 // 新建流程图
 async function handleNew() {
   // 空白 BPMN XML
@@ -145,61 +269,59 @@ function download(filename: string, data: string, mime: string) {
   URL.revokeObjectURL(url);
 }
 
-// 加载 BPMN XML
-async function loadXml(xml: string) {
-  if (!modeler) return;
-  try {
-    // 导入 XML
-    await modeler.importXML(xml);
-  } catch (err) {
-    console.error("无法导入 BPMN 2.0 XML", err);
-  }
-}
-
-onMounted(() => {
-  if (!cavansDom.value) return;
-  // 创建 BPMN 编辑器实例
-  modeler = new BpmnModeler({
-    // 指定挂载容器
-    container: cavansDom.value,
-    // 属性面板配置
-    propertiesPanel: {
-      parent: "#js-properties-panel",
-    },
-    // 额外模块
-    additionalModules: [
-      // 属性面板
-      BpmnPropertiesPanelModule,
-      // 属性提供器
-      BpmnPropertiesProviderModule,
-      // 汉化模块
-      customTranslateModule,
-    ],
-  });
-
-  // 监听事件
-  modelerListener();
-
-  // 加载默认 XML
-  loadXml(xmlStr);
-  // 自动缩放
-  const canvans = modeler.get<Canvas>("canvas");
-  canvans.zoom("fit-viewport");
-});
-
-onBeforeUnmount(() => {
-  // 销毁实例
-  modeler?.destroy();
-  // 清空引用
-  modeler = null;
-});
-
 function modelerListener() {
   if (!modeler) return;
-  const event = ["shape.added", "shape.removed", "element.move.end"];
-  event.forEach((e) => {
-    modeler?.on(e, function (e) {
-      console.log(e);
+
+  const events = ["shape.added", "shape.removed", "element.move.end"];
+
+  events.forEach(function (event) {
+    modeler?.on(event, function (e: any) {
+      const elementRegistry = modeler?.get<ElementRegistry>("elementRegistry");
+      const shape = e.element ? elementRegistry?.get(e.element.id) : e.element;
+      console.log(shape);
+      if (event === "element.move.end") {
+        console.log("元素移动结束", shape);
+      } else if (event === "shape.added") {
+        console.log("元素添加", shape);
+      } else if (event === "shape.removed") {
+        console.log("元素删除", shape);
+      }
+    });
+  });
+}
+
+function eventBusListener() {
+  if (!modeler) return;
+  const m = modeler;
+  const eventBus = modeler.get<EventBus>("eventBus");
+
+  const eventTypes = ["element.click", "element.changed"];
+
+  eventTypes.forEach((eventType) => {
+    eventBus.on(eventType, function (e: any) {
+      if (!e || e.element.type === "bpmn:Process") return;
+      // console.log("元素被点击", e);
+
+      const elementRegistry = m.get<ElementRegistry>("elementRegistry");
+      const shape = e.element ? elementRegistry?.get(e.element.id) : e.element;
+
+      const modeling = m.get<Modeling>("modeling");
+
+      if (eventType === "element.click") {
+        if (shape.type === "bpmn:UserTask") {
+          modeling.updateProperties(shape, {
+            name: "点击修改的UserTask名称",
+          });
+        } else if (shape.type === "bpmn:StartEvent") {
+          modeling.updateProperties(shape, {
+            name: "点击修改的StartEvent名称",
+            isInterrupting: false,
+            customText: "自定义扩展属性值",
+          });
+        }
+      }
+
+      console.log(shape.businessObject);
     });
   });
 }
@@ -219,6 +341,7 @@ function modelerListener() {
 }
 
 .container {
+  position: relative;
   padding: 20px;
   width: 100%;
   height: calc(100vh);
@@ -226,7 +349,6 @@ function modelerListener() {
 }
 
 .canvas {
-  position: relative;
   width: 100%;
   height: 600px;
   border: 2px solid #000;
@@ -235,8 +357,8 @@ function modelerListener() {
 
 .panel {
   position: absolute;
-  right: 0;
-  top: 0;
+  right: 22px;
+  top: 22px;
   width: 300px;
   height: 350px;
 }

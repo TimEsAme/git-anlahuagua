@@ -40,7 +40,7 @@ export const xmlStr = `
 
       <!-- 用户任务图形 -->
       <bpmndi:BPMNShape id="UserTask_1_di" bpmnElement="UserTask_1">
-        <omgdc:Bounds x="240" y="80" width="100" height="80" />
+        <omgdc:Bounds x="280" y="80" width="100" height="80" />
       </bpmndi:BPMNShape>
 
       <!-- 结束事件图形 -->
@@ -51,11 +51,12 @@ export const xmlStr = `
       <!-- 顺序流连线 -->
       <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
         <omgdi:waypoint x="186" y="118" />
-        <omgdi:waypoint x="240" y="118" />
+        <omgdi:waypoint x="280" y="118" />
       </bpmndi:BPMNEdge>
 
       <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
-        <omgdi:waypoint x="290" y="118" />
+
+        <omgdi:waypoint x="325" y="118" />
         <omgdi:waypoint x="400" y="118" />
       </bpmndi:BPMNEdge>
 

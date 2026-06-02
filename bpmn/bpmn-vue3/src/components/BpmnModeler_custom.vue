@@ -30,10 +30,9 @@
 
     <!-- 内容区 -->
     <div class="container">
-      <div ref="cavansDom" class="canvas">
-        <!-- 属性面板 -->
-        <div id="js-properties-panel" class="panel"></div>
-      </div>
+      <div ref="cavansDom" class="canvas"></div>
+      <!-- 属性面板 -->
+      <div id="js-properties-panel" class="panel"></div>
     </div>
   </div>
 </template>

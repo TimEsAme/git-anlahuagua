@@ -31,8 +31,6 @@
     <!-- 内容区 -->
     <div class="container">
       <div ref="cavansDom" class="canvas">
-        <!-- 属性面板 -->
-        <div id="js-properties-panel" class="panel"></div>
         <el-dialog
           v-model="bpmnStore.nodeVisible"
           title="Tips"
@@ -48,6 +46,10 @@
           </template>
         </el-dialog>
       </div>
+      <!-- 属性面板 -->
+      <!-- <div id="js-properties-panel" class="panel"></div> -->
+      <!-- 自定义属性面板 -->
+      <properties-view v-if="modeler" :modeler="modeler!" />
     </div>
   </div>
 </template>
@@ -75,6 +77,8 @@ import "bpmn-js/dist/assets/bpmn-font/css/bpmn.css";
 // import customTranslateModule from "@/additional-modules/Translate";
 // 属性面板样式
 import "@bpmn-io/properties-panel/assets/properties-panel.css";
+// 自定义属性面板组件
+import PropertiesView from "./customPropertiesPanel/PropertiesView.vue";
 
 import type ElementRegistry from "diagram-js/lib/core/ElementRegistry";
 import type EventBus from "diagram-js/lib/core/EventBus";
@@ -82,6 +86,7 @@ import type EventBus from "diagram-js/lib/core/EventBus";
 import CustomModeler from "./customModeler";
 
 import { useBpmnStore } from "@/store/bpmn";
+
 const bpmnStore = useBpmnStore();
 
 const handleClose = () => {
@@ -92,7 +97,7 @@ const handleClose = () => {
 const cavansDom = ref<HTMLElement | null>(null);
 
 // BPMN 实例
-let modeler: BpmnModeler | null = null;
+const modeler = ref<BpmnModeler | null>(null);
 
 // 新建流程图
 async function handleNew() {
@@ -111,7 +116,7 @@ async function handleNew() {
   // 加载 XML
   await loadXml(emptyXml);
   // 自动缩放到可视区域
-  const canvans = modeler?.get<Canvas>("canvas");
+  const canvans = modeler.value?.get<Canvas>("canvas");
   canvans?.zoom("fit-viewport");
 }
 
@@ -119,7 +124,7 @@ async function handleNew() {
 async function handleExportXML() {
   if (!modeler) return;
   // 获取 XML 数据
-  const { xml } = await modeler.saveXML({
+  const { xml } = await modeler.value!.saveXML({
     format: true,
   });
   // 下载 XML 文件
@@ -130,7 +135,7 @@ async function handleExportXML() {
 async function handleExportSVG() {
   if (!modeler) return;
   // 获取 SVG 数据
-  const { svg } = await modeler.saveSVG();
+  const { svg } = await modeler.value!.saveSVG();
   // 下载 SVG 文件
   download("jojo.svg", svg, "image/svg+xml");
 }
@@ -146,7 +151,7 @@ async function handleImport(e: Event) {
   // 加载 XML
   await loadXml(text);
   // 自动缩放
-  const canvas = modeler!.get<Canvas>("canvas");
+  const canvas = modeler.value!.get<Canvas>("canvas");
   canvas.zoom("fit-viewport");
   // 清空 input
   input.value = "";
@@ -176,34 +181,34 @@ async function loadXml(xml: string) {
   if (!modeler) return;
   try {
     // 导入 XML
-    await modeler.importXML(xml);
+    await modeler.value!.importXML(xml);
   } catch (err) {
     console.error("无法导入 BPMN 2.0 XML", err);
   }
 }
 
-onMounted(() => {
+onMounted(async () => {
   if (!cavansDom.value) return;
 
-  modeler = new CustomModeler({
+  modeler.value = new CustomModeler({
     container: cavansDom.value,
   });
   // 加载默认 XML
-  loadXml(xmlStr);
+  await loadXml(xmlStr);
   // 自动缩放
-  const canvans = modeler!.get<Canvas>("canvas");
+  const canvans = modeler.value!.get<Canvas>("canvas");
   canvans.zoom("fit-viewport");
 
   // 监听事件
   // modelerListener();
-  // eventBusListener();
+  eventBusListener();
 });
 
 onBeforeUnmount(() => {
   // 销毁实例
-  modeler?.destroy();
+  modeler.value?.destroy();
   // 清空引用
-  modeler = null;
+  modeler.value = null;
 });
 
 // 给 bpmn-js modeler 注册事件监听。
@@ -215,8 +220,9 @@ function modelerListener() {
   if (!modeler) return;
   const event = ["shape.added", "shape.removed", "element.move.end"];
   event.forEach((event) => {
-    modeler?.on(event, function (e: any) {
-      const elementRegistry = modeler?.get<ElementRegistry>("elementRegistry");
+    modeler.value?.on(event, function (e: any) {
+      const elementRegistry =
+        modeler.value?.get<ElementRegistry>("elementRegistry");
       const shape = e.element ? elementRegistry?.get(e.element.id) : e.element;
       // console.log(shape);
       if (event === "element.move.end") {
@@ -235,14 +241,20 @@ function modelerListener() {
 // 时，获取当前元素并打印。
 function eventBusListener() {
   if (!modeler) return;
-  const eventBus = modeler.get<EventBus>("eventBus");
+  const m = modeler.value;
+  const eventBus = modeler.value!.get<EventBus>("eventBus");
   const eventTypes = ["element.click", "element.changed"];
   eventTypes.forEach((eventType) => {
-    eventBus.on(eventType, function (e: any) {
+    eventBus.on(eventType, async function (e: any) {
       if (!e || e.element.type === "bpmn:Process") return;
-      const elementRegistry = modeler?.get<ElementRegistry>("elementRegistry");
-      const shape = e.element ? elementRegistry?.get(e.element.id) : e.element;
-      console.log(shape);
+      // const elementRegistry = modeler?.get<ElementRegistry>("elementRegistry");
+      // const shape = e.element ? elementRegistry?.get(e.element.id) : e.element;
+      // console.log(shape);
+      if (eventType === "element.changed") {
+        console.log("元素属性被修改了");
+        const { xml } = await m!.saveXML({ format: true });
+        console.log(xml); // 修改后的最新xml
+      }
     });
   });
 }

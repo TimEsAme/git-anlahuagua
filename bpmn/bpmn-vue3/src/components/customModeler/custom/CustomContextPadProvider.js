@@ -4,6 +4,13 @@ import {
   customFlowAction,
   batchCreateCustom,
 } from "@/utils/util";
+
+import { useBpmnStore } from "../../../store/bpmn.ts";
+import pinia from '../../../store/index.ts'  // 需要导出 pinia 实例
+import { setActivePinia } from 'pinia'
+setActivePinia(pinia) // 手动激活
+const bpmnStore = useBpmnStore();
+
 export default function CustomContextPadProvider(
   config,
   contextPad,
@@ -52,6 +59,8 @@ CustomContextPadProvider.prototype.getContextPadEntries = function (element) {
   function clickElement(e) {
     console.log(element);
     console.log(e);
+    bpmnStore.toggleNodeVisible(true);
+    bpmnStore.setNodeInfo(element);
   }
 
   function removeElement(e) {
@@ -98,11 +107,10 @@ CustomContextPadProvider.prototype.getContextPadEntries = function (element) {
         if (autoPlace) {
           const businessObject = bpmnFactory.create(type);
           const shape = elementFactory.createShape(
-            {
+            Object.assign({
               type,
               businessObject,
-            },
-            options
+            }, options)
           );
           autoPlace.append(element, shape);
         } else {
@@ -116,11 +124,10 @@ CustomContextPadProvider.prototype.getContextPadEntries = function (element) {
       return function (event, element) {
         const businessObject = bpmnFactory.create(type);
         const shape = elementFactory.createShape(
-          {
+          Object.assign({
             type,
             businessObject,
-          },
-          options
+          }, options)
         );
         create.start(event, shape, element);
       };
