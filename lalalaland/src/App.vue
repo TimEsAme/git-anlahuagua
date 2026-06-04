@@ -10,7 +10,7 @@
 
     <!-- 全局错误处理插件 -->
     <!-- <button @click="boom">安拉花瓜!!!</button>
-    <ErrorLogger />  -->
+    <ErrorLogger /> -->
 
     <!-- pinia插件 -->
     <!-- <h1>{{ jojojoStore.sum }}</h1>
@@ -48,28 +48,24 @@
 // @ts-nocheck
 import { customRef, ref } from "vue";
 
-// 防抖ref
-// function debounceRef(value, delay = 1000) {
-//   let timer = null;
-//   let _value = value;
-//   return customRef((track, trigger) => {
-//     return {
-//       get() {
-//         track();
-//         return _value;
-//       },
-//       set(val) {
-//         // 防抖
-//         clearTimeout(timer);
-//         timer = setTimeout(() => {
-//           _value = val;
-//           trigger();
-//         }, delay);
-//       },
-//     };
-//   });
+// 各种传值
+// import Xxx from "./components/Xxx.vue";
+// let name = ref("张三");
+// const changeA = (n) => {
+//   name.value = n;
+// };
+
+// 自定义指令设置按钮权限
+// import Permission from "./components/Permission.vue";
+
+// 全局错误处理插件
+// function boom() {
+//   throw new Error("安拉花瓜!!!");
 // }
-// const text = debounceRef("安拉花瓜", 1000);
+
+// pinia
+// import { useJojoStore } from "./store/jojo.ts";
+// const jojojoStore = useJojoStore();
 
 // 树形组件
 // import Tree from "./components/Tree.vue";
@@ -148,7 +144,7 @@ import { customRef, ref } from "vue";
 //     ],
 //   },
 // ]);
-// 处理数据,树组件要知道自己的父组件是谁
+// // 处理数据,树组件要知道自己的父组件是谁
 // const initParent = (data, parent = null) => {
 //   data.forEach((e) => {
 //     e.parent = parent;
@@ -162,23 +158,29 @@ import { customRef, ref } from "vue";
 // const changeEvent = (data) => {
 //   console.log(data);
 // };
-// import { useJojoStore } from "./store";
-// const jojojoStore = useJojoStore();
 
-// 自定义指令设置按钮权限
-// import Permission from "./components/Permission.vue";
-
-// 各种传值
-// import Xxx from "./components/Xxx.vue";
-// let name = ref("张三");
-// const changeA = (n) => {
-//   name.value = n;
-// };
-
-// 全局错误处理插件
-// function boom() {
-//   throw new Error("安拉花瓜!!!");
+// 防抖ref
+// function debounceRef(value, delay = 1000) {
+//   let timer = null;
+//   let _value = value;
+//   return customRef((track, trigger) => {
+//     return {
+//       get() {
+//         track();
+//         return _value;
+//       },
+//       set(val) {
+//         // 防抖
+//         clearTimeout(timer);
+//         timer = setTimeout(() => {
+//           _value = val;
+//           trigger();
+//         }, delay);
+//       },
+//     };
+//   });
 // }
+// const text = debounceRef("安拉花瓜", 1000);
 
 // 懒加载
 // import Lazy from "./components/Lazy.vue";

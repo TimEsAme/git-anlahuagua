@@ -149,7 +149,7 @@ const markAsyncComponent = (loader: () => Promise<any>) => {
   return markRaw(defineAsyncComponent(loader));
 };
 
-export const componentMap = {
+export const componentMap:ComponentMap = {
   // 业务组件 - 全部用 markAsyncComponent 包装
   'single-select': markAsyncComponent(
     () => import('@/components/surveyComs/Materials/SelectComs/SingleSelect.vue'),
@@ -175,9 +175,9 @@ export const componentMap = {
   'rate-score': markAsyncComponent(
     () => import('@/components/surveyComs/Materials/AdvancedComs/RateScore.vue'),
   ),
-  // 'date-time': markAsyncComponent(
-  //   () => import('@/components/surveyComs/Materials/AdvancedComs/DateTime.vue'),
-  // ),
+  'date-time': markAsyncComponent(
+    () => import('@/components/surveyComs/Materials/AdvancedComs/DateTime.vue'),
+  ),
   'personal-info-gender': markAsyncComponent(
     () => import('@/components/surveyComs/Materials/SelectComs/SingleSelect.vue'),
   ),

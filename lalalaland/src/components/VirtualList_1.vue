@@ -49,26 +49,34 @@ const init = () => {
 
 // 可视区显示数量
 const visibleCount = computed(() =>
-  Math.ceil(screenHeight.value / props.estimatedItemSize)
+  Math.ceil(screenHeight.value / props.estimatedItemSize),
 );
 
 const aboveCount = computed(() =>
-  Math.min(startIndex.value, props.bufferScale * visibleCount.value)
+  Math.min(startIndex.value, props.bufferScale * visibleCount.value),
 );
 const belowCount = computed(() =>
-  Math.min(props.dataList.length - endIndex.value, props.bufferScale * visibleCount.value)
+  Math.min(
+    props.dataList.length - endIndex.value,
+    props.bufferScale * visibleCount.value,
+  ),
 );
 
 // 当前显示的数据
 const visibleData = computed(() => {
   const start = Math.max(0, startIndex.value - aboveCount.value);
-  const end = Math.min(endIndex.value + belowCount.value, props.dataList.length);
+  const end = Math.min(
+    endIndex.value + belowCount.value,
+    props.dataList.length,
+  );
   return props.dataList.slice(start, end);
 });
 
 // 二分查找获取当前 startIndex
 const getStartIndex = (scrollTop) => {
-  let left = 0, right = positions.length - 1, result = 0;
+  let left = 0,
+    right = positions.length - 1,
+    result = 0;
   while (left <= right) {
     const mid = Math.floor((left + right) / 2);
     if (positions[mid].bottom > scrollTop) {
@@ -86,11 +94,14 @@ const scrollHandler = () => {
   if (!list.value) return;
   const scrollTop = list.value.scrollTop;
   // console.log(scrollTop);
-  
+
   const newStartIndex = getStartIndex(scrollTop);
   if (newStartIndex !== startIndex.value) {
     startIndex.value = newStartIndex;
-    endIndex.value = Math.min(startIndex.value + visibleCount.value, props.dataList.length);
+    endIndex.value = Math.min(
+      startIndex.value + visibleCount.value,
+      props.dataList.length,
+    );
     setStartOffset();
   }
 };
@@ -125,7 +136,8 @@ const updateItemsSize = () => {
 // 设置内容容器偏移
 const setStartOffset = () => {
   if (!content.value) return;
-  const startOffset = positions[Math.max(0, startIndex.value - aboveCount.value)]?.top || 0;
+  const startOffset =
+    positions[Math.max(0, startIndex.value - aboveCount.value)]?.top || 0;
   content.value.style.transform = `translate3d(0,${startOffset}px,0)`;
 };
 
@@ -133,10 +145,14 @@ const setStartOffset = () => {
 onMounted(() => {
   screenHeight.value = list.value.clientHeight;
   startIndex.value = 0;
-  endIndex.value = Math.min(startIndex.value + visibleCount.value, props.dataList.length);
+  endIndex.value = Math.min(
+    startIndex.value + visibleCount.value,
+    props.dataList.length,
+  );
   init();
   if (listHeight.value && positions.length) {
-    listHeight.value.style.height = positions[positions.length - 1].bottom + "px";
+    listHeight.value.style.height =
+      positions[positions.length - 1].bottom + "px";
   }
   setStartOffset();
 });
@@ -147,7 +163,8 @@ onUpdated(() => {
     if (!items.value?.length) return;
     const needUpdate = updateItemsSize();
     if (needUpdate && listHeight.value && positions.length) {
-      listHeight.value.style.height = positions[positions.length - 1].bottom + "px";
+      listHeight.value.style.height =
+        positions[positions.length - 1].bottom + "px";
       setStartOffset();
     }
   });
@@ -159,15 +176,19 @@ watch(
   () => {
     init();
     startIndex.value = 0;
-    endIndex.value = Math.min(startIndex.value + visibleCount.value, props.dataList.length);
+    endIndex.value = Math.min(
+      startIndex.value + visibleCount.value,
+      props.dataList.length,
+    );
     nextTick(() => {
       if (listHeight.value && positions.length) {
-        listHeight.value.style.height = positions[positions.length - 1].bottom + "px";
+        listHeight.value.style.height =
+          positions[positions.length - 1].bottom + "px";
       }
       setStartOffset();
     });
   },
-  { immediate: true }
+  { immediate: true },
 );
 </script>
 
@@ -180,11 +201,15 @@ watch(
 }
 .infinite-list-phantom {
   position: absolute;
-  left: 0; top: 0; right: 0;
+  left: 0;
+  top: 0;
+  right: 0;
   z-index: -1;
 }
 .infinite-list {
-  left: 0; right: 0; top: 0;
+  left: 0;
+  right: 0;
+  top: 0;
   position: absolute;
   text-align: center;
 }

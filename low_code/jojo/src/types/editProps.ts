@@ -116,3 +116,7 @@ export function isOptionsStatusByIndexPayload(obj: object): obj is optionsStatus
     typeof (obj as optionsStatusByIndexPayload).index === 'number'
   );
 }
+
+export function isOptionsProps(props: OptionsProps): props is OptionsProps {
+  return props && Array.isArray(props.status);
+}

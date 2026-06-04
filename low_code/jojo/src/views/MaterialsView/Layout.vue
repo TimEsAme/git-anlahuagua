@@ -135,6 +135,7 @@ const updateStatus = (
   const status = store.coms[store.currentMaterialCom].status as unknown as
     | TypeStatus
     | OptionsStatus;
+
   dispatchStatus(store, status, configKey, payload, name);
 };
 

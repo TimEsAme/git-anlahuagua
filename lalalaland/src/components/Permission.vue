@@ -1,7 +1,7 @@
 <template>
   <div>
-    <button v-permission="['read']">read</button>
-    <button v-permission="['write']">write</button>
+    <button v-permission="['read', 'write', 'admin']">read</button>
+    <button v-permission="['write', 'admin']">write</button>
     <button v-permission="['admin']">admin</button>
   </div>
 </template>

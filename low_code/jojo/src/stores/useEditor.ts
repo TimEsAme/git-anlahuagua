@@ -12,6 +12,7 @@ import {
   setTextType,
   setUse,
   setOptionsStatusByIndex,
+  setDateType,
 } from './actions';
 import { isSurveyComName, type Status, type SurveyDBData, type TypeStatus } from '@/types';
 import { markRaw } from 'vue';
@@ -247,6 +248,7 @@ export const useEditorStore = defineStore('editor', {
     setTextType,
     setUse,
     setOptionsStatusByIndex,
+    setDateType,
     addCom(newCom: Status) {
       this.coms.push(newCom);
       this.currentComponentIndex = -1;

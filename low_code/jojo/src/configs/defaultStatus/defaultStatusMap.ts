@@ -6,7 +6,7 @@ import multiPicSelect from './multiPicSelect';
 import textNote from './TextNote';
 import textInput from './TextInput';
 import rateScore from './RateScore';
-// import dateTime from './DateTime';
+import dateTime from './DateTime';
 
 export const defaultStatusMap = {
   // 选择-单选
@@ -28,7 +28,7 @@ export const defaultStatusMap = {
 
   // 评价打分
   'rate-score': rateScore,
-  // 'date-time': dateTime,
+  'date-time': dateTime,
 
   // 个人信息
   'personal-info-gender': singleSelectDefaultStatus,

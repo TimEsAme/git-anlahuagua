@@ -30,8 +30,13 @@ export function dispatchStatus(
       ) {
         store.setTextType(status[configKey], payload);
         store.setCurrentStatus(status[configKey], payload);
+      } else if (
+        typeof payload == 'number' &&
+        IsTypeStatus(status) &&
+        name === 'date-time-type-editor'
+      ) {
+        store.setDateType(status[configKey], payload);
       }
-
       break;
     }
     case 'title':

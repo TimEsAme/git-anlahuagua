@@ -2,6 +2,7 @@ import { componentMap } from '@/configs/componentMap';
 import { educationStatus, genderStatus } from '@/configs/defaultStatus/initStatus';
 import type { componentName, EditComName, Material, Status, SurveyDBData } from '@/types';
 import {
+  isOptionsProps,
   IsOptionsStatus,
   IsPicTitleDescStatusArr,
   IsStringArr,
@@ -48,7 +49,7 @@ export function getValueStatusByCurrentStatus(props: OptionsProps) {
   if (
     props &&
     isOptionsProps(props) &&
-    (isValueStatusArray(props.status) || isPicTitleDescArray(props.status))
+    (IsValueStatusArr(props.status) || IsPicTitleDescStatusArr(props.status))
   ) {
     return props.status[props.currentStatus];
   }

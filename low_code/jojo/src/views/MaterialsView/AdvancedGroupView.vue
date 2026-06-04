@@ -7,12 +7,12 @@
         to="/materials/advanced-group/rate-score"
         >评价打分
       </router-link>
-      <!-- <router-link
+      <router-link
         class="link-item mb-15"
         exact-active-class="link-item-active"
         to="/materials/advanced-group/date-time"
         >日期时间
-      </router-link> -->
+      </router-link>
     </Layout>
   </div>
 </template>

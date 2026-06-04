@@ -38,10 +38,10 @@ export const SurveyComsList = [
         materialName: 'text-note',
         comName: '备注说明',
       },
-      // {
-      //   materialName: 'date-time',
-      //   comName: '时间日期',
-      // },
+      {
+        materialName: 'date-time',
+        comName: '时间日期',
+      },
     ],
   },
   {

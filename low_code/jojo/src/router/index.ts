@@ -79,12 +79,12 @@ const router = createRouter({
               component: () =>
                 import('@/components/surveyComs/Materials/AdvancedComs/RateScore.vue'),
             },
-            // {
-            //   path: 'date-time',
-            //   name: 'date-time',
-            //   component: () =>
-            //     import('@/components/surveyComs/Materials/AdvancedComs/DateTime.vue'),
-            // },
+            {
+              path: 'date-time',
+              name: 'date-time',
+              component: () =>
+                import('@/components/surveyComs/Materials/AdvancedComs/DateTime.vue'),
+            },
           ],
         },
         {

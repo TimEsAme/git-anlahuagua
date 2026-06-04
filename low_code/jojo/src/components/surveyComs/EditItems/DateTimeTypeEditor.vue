@@ -15,10 +15,10 @@
           @change="selectValueChangeHandle"
         >
           <el-option
-            v-for="item in status"
+            v-for="(item, index) in status"
             :key="item.value"
             :label="item.status"
-            :value="item.value"
+            :value="index"
           >
           </el-option>
         </el-select>
@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { ComType, valueStatusArr } from '@/types';
+import type { ComType, UpdateStatus, valueStatusArr } from '@/types';
 import { inject, ref } from 'vue';
 
 const props = defineProps<{
@@ -43,13 +43,12 @@ const props = defineProps<{
 
 const selectValue = ref('');
 
-const updateStatus = inject('updateStatus') as (
-  configKey: string,
-  payload?: string | number | boolean | object,
-) => void;
+const updateStatus = inject<UpdateStatus>('updateStatus');
 
 const selectValueChangeHandle = (val: string) => {
-  updateStatus(props.configKey, val);
+  if (updateStatus) {
+    updateStatus(props.configKey, val, props.name);
+  }
 };
 </script>
 

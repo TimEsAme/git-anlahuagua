@@ -76,3 +76,7 @@ export function setPicLinkByIndex(optionsProps: OptionsProps, payload: PicLink) 
     optionsProps.status[payload.index]!.value = payload.link;
   }
 }
+
+export function setDateType(optionsProps: OptionsProps, index: number) {
+  optionsProps.currentStatus = index;
+}

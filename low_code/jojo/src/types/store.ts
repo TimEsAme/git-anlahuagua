@@ -9,7 +9,7 @@ import type {
 } from '@/types';
 // 题目类型
 export type SurveyComName =
-  // | 'date-time'
+  | 'date-time'
   | 'rate-score'
   | 'text-input'
   | 'single-select'
@@ -36,7 +36,7 @@ export type EditComName =
   | 'text-input-type-editor'
   | 'text-type-editor'
   | 'pic-options-editor'
-  // | 'date-time-type-editor'
+  | 'date-time'
   | 'rate-text-editor'
   | 'options-editor';
 
@@ -63,6 +63,7 @@ export interface Actions {
     optionsProps: OptionsProps,
     payload: optionsStatusByIndexPayload,
   ) => void;
+  setDateType: (optionProps: OptionsProps, index: number) => void;
 }
 
 // 仓库状态

@@ -11,20 +11,20 @@ pinia.use(logPlugin);
 const app = createApp(App);
 
 // 自定义指令设置按钮权限
-// const u = ["write", "admin"];
-// app.directive("permission", {
-//   mounted(el, binding) {
-//     const { value } = binding;
-//     if (value && value instanceof Array) {
-//       const b = value.some((e) => u.includes(e));
-//       console.log(b);
+const u = ["write", "admin"];
+app.directive("permission", {
+  mounted(el, binding) {
+    const { value } = binding;
+    if (value && value instanceof Array) {
+      const b = value.some((e) => u.includes(e));
+      console.log(b);
 
-//       if (!b) {
-//         el.style.display = "none";
-//       }
-//     }
-//   },
-// });
+      if (!b) {
+        el.style.display = "none";
+      }
+    }
+  },
+});
 
 app.use(errorLoggers, {
   logToConsole: true,

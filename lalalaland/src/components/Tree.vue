@@ -14,12 +14,11 @@
         v-model="e.checked"
         @change="jojoChange(e)"
       />
-      <label :for="e.label">{{ e.label }}</label>
+      <label>{{ e.label }}</label>
     </div>
 
     <div v-if="transition">
       <Transition
-        name="expand"
         @before-enter="beforeEnter"
         @enter="enter"
         @after-enter="afterEnter"
@@ -32,7 +31,7 @@
             :data="e.children"
             :showCheckbox="showCheckbox"
             :transition="transition"
-            @jojo="emit('jojo', e)"
+            @jojo="emit('jojo', $event)"
           />
         </div>
       </Transition>
@@ -43,7 +42,7 @@
           :data="e.children"
           :showCheckbox="showCheckbox"
           :transition="transition"
-          @jojo="emit('jojo', e)"
+          @jojo="emit('jojo', $event)"
         />
       </div>
     </div>
@@ -75,10 +74,6 @@ const isOpenArr = ref(props.data.map(() => true));
 const hasChildren = (node) => {
   return node.children && node.children.length > 0;
 };
-
-// 采用依赖注入的方式向下一级提供父节点
-const parentNode = inject("parentNode", null); // 拿到父节点
-provide("parentNode", props.data); // 向下一级提供父节点
 
 // 复选框处理函数
 function jojoChange(node) {

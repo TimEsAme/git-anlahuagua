@@ -12,6 +12,7 @@ import {
   setPicLinkByIndex,
   setTextType,
   setUse,
+  setDateType,
 } from './actions';
 import { updateInitStatusBeforeAdd } from '@/utils';
 import type { Material, Status } from '@/types';
@@ -50,7 +51,7 @@ export const useMaterialStore = defineStore('materials', {
       // 备注说明
       'text-note': defaultStatusMap['text-note'](),
       // 日期时间
-      // 'date-time': defaultStatusMap['date-time'](),
+      'date-time': defaultStatusMap['date-time'](),
       // 文本输入
       'text-input': defaultStatusMap['text-input'](),
 
@@ -79,6 +80,7 @@ export const useMaterialStore = defineStore('materials', {
     setPicLinkByIndex,
     setTextType,
     setUse,
+    setDateType,
     // 根据当前路由切换当前编辑的组件
     setCurrentMaterialCom(comName: string) {
       this.currentMaterialCom = comName;

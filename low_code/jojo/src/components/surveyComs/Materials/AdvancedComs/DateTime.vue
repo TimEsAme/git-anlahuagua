@@ -20,11 +20,11 @@
     <div>
       <el-date-picker
         v-model="datetimeValue"
-        format="yyyy 第 WW 周"
+        :type="computedState.type?.value"
+        placeholder="请选择日期"
         @click.stop
-        placeholder="选择周"
-      >
-      </el-date-picker>
+        @change="emitAnswer"
+      />
     </div>
   </div>
 </template>
@@ -45,7 +45,7 @@ const props = defineProps<{
   status: TypeStatus;
 }>();
 
-const datetimeValue = ref('');
+const datetimeValue = ref<Date>(new Date());
 
 const computedState = computed(() => ({
   type: getValueStatusByCurrentStatus(props.status.type),
@@ -62,7 +62,9 @@ const computedState = computed(() => ({
   descColor: getTextStatus(props.status.descColor),
 }));
 
-// console.log(computedState.value.type);
+const emitAnswer = () => {
+  // emits('updateAnswer', datetimeValue.value);
+};
 </script>
 
 <style scoped lang="scss">
