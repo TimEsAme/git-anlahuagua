@@ -25,6 +25,7 @@ const props = defineProps(['item']);
 
 const addSurveyComItem = () => {
   const newSurveyComName = props.item.materialName as Material;
+
   if (!newSurveyComName) {
     console.warn('请先选择题型');
     return;

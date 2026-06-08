@@ -145,11 +145,11 @@ const router = createRouter({
           name: 'survey-type',
           component: () => import('@/views/EditorView/LeftSide/SurveyType.vue'),
         },
-        // {
-        //   path: 'outline',
-        //   name: 'outline',
-        //   component: () => import('@/views/EditorView/LeftSide/OutLine.vue'),
-        // },
+        {
+          path: 'outline',
+          name: 'outline',
+          component: () => import('@/views/EditorView/LeftSide/OutLine.vue'),
+        },
       ],
     },
     {

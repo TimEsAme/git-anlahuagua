@@ -80,7 +80,7 @@ const renderChart = () => {
           name: "销售额",
           icon: "circle",
           textStyle: {
-            color: "#fff",
+            color: "#aaa",
           },
         },
       ],

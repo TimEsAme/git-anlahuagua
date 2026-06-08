@@ -32,26 +32,28 @@ import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 const route = useRoute();
 const router = useRouter();
-
+const props = defineProps({
+  id: {
+    type: String,
+    default: '',
+  },
+});
 const routeName = computed(() => route.name);
 
 const switchEditor = () => {
-  // if (id) {
-  //   router.push(`/editor/${id}/survey-type`);
-  // } else {
-  //   router.push('/editor/survey-type');
-  // }
-
-  router.push('/editor/survey-type');
+  if (props.id) {
+    router.push(`/editor/${props.id}/survey-type`);
+  } else {
+    router.push('/editor/survey-type');
+  }
 };
 
 const switchOutline = () => {
-  // if (id) {
-  //   router.push(`/editor/${id}/outline`);
-  // } else {
-  //   router.push('/editor/outline');
-  // }
-  router.push('/editor/outline');
+  if (props.id) {
+    router.push(`/editor/${props.id}/outline`);
+  } else {
+    router.push('/editor/outline');
+  }
 };
 </script>
 

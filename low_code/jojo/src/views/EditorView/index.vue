@@ -7,7 +7,7 @@
       />
     </div>
     <div class="container">
-      <LeftSide />
+      <LeftSide :id="id" />
       <RightSide />
     </div>
     <div>

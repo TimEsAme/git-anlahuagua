@@ -64,7 +64,7 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
-    autoScale: { 
+    autoScale: {
       // 缩放方向配置
       type: [Object, Boolean] as PropType<IAutoScale>,
       default: true,
