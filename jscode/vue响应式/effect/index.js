@@ -63,12 +63,8 @@ const dio = new Proxy(jojo, {
 function cleanup(a) {
   const deps = a.deps;
   if (deps.length) {
-    console.log(deps, "8888888888888888");
     deps.forEach((xs) => {
-      console.log(xs, "9999999999999999");
-
       xs.delete(a);
-      console.log(xs, "0000000000000000");
       //   如果这个集合空了就从map里面删除
       if (xs.size === 0) {
         for (let [key, value] of xMap) {
