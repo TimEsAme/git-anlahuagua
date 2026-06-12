@@ -36,13 +36,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ElCol, ElRow } from "element-plus";
+import { ElCol, ElNotification, ElRow } from "element-plus";
 import { User, Lock } from "@element-plus/icons-vue";
 import { reactive, ref } from "vue";
-// import useUserStore from "@/store/modules/user";
+import useUserStore from "@/store/modules/user";
 import { useRoute, useRouter } from "vue-router";
-// import { getTime } from "@/utils/time";
-// const userstore = useUserStore();
+import { getTime } from "@/utils/time";
+const userstore = useUserStore();
 
 const router = useRouter();
 const route = useRoute();
@@ -52,35 +52,32 @@ let form = ref();
 
 const loginForm = reactive({
   username: "admin",
-  password: "111111",
+  password: "123456",
 });
 
 const loginEvent = async () => {
   await form.value.validate();
   flag.value = true;
 
-  let redirect: any = route.query.redirect;
-  router.push({ path: redirect || "/" });
-
-  // try {
-  //   await userstore.userLogin(loginForm);
-  //   let redirect: any = route.query.redirect;
-  //   router.push({ path: redirect || "/" });
-  //   ElNotification({
-  //     type: "success",
-  //     title: "欢迎回来",
-  //     message: `HI,${getTime()}`,
-  //     duration: 2000,
-  //   });
-  //   flag.value = false;
-  // } catch (error) {
-  //   flag.value = false;
-  //   ElNotification({
-  //     type: "error",
-  //     message: (error as Error).message,
-  //     duration: 2000,
-  //   });
-  // }
+  try {
+    await userstore.userLogin(loginForm);
+    let redirect: any = route.query.redirect;
+    router.push({ path: redirect || "/" });
+    ElNotification({
+      type: "success",
+      title: "欢迎回来",
+      message: `HI,${getTime()}`,
+      duration: 2000,
+    });
+    flag.value = false;
+  } catch (error) {
+    flag.value = false;
+    ElNotification({
+      type: "error",
+      message: (error as Error).message,
+      duration: 2000,
+    });
+  }
 };
 const validateUsername = (_rule: any, value: any, callback: any) => {
   if (value.length >= 5) {

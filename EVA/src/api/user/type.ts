@@ -11,14 +11,18 @@ export interface ResponseData {
   ok: boolean;
 }
 
+export type TokenType = {
+  token: string;
+};
+
 export interface LoginResponseData extends ResponseData {
-  data: string;
+  data: TokenType;
 }
 
 export interface UserInfoResponseData extends ResponseData {
   data: {
     avatar: string;
-    name: string;
+    username: string;
     buttons: string[];
     roles: string[];
     routes: string[];

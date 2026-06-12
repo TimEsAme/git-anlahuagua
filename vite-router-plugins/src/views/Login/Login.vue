@@ -17,46 +17,46 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
-import { login, loginout, getCurrentUserRole } from '../router'
+import { ref, computed } from "vue";
+import { useRouter } from "vue-router";
+import { login, loginout, getCurrentUserRole } from "../router";
 
-const router = useRouter() // 获取路由实例
-const username = ref('') // 账号
-const password = ref('') // 密码
+const router = useRouter(); // 获取路由实例
+const username = ref(""); // 账号
+const password = ref(""); // 密码
 
 // 根据 getCurrentUserRole 方法获取当前用户的角色
 const userRole = computed(() => {
-  const role = ref(getCurrentUserRole())
-  if (role.value === 'admin') {
-    return '管理员'
-  } else if (role.value === 'user') {
-    return '普通用户'
+  const role = ref(getCurrentUserRole());
+  if (role.value === "admin") {
+    return "管理员";
+  } else if (role.value === "user") {
+    return "普通用户";
   } else {
-    return null
+    return null;
   }
-})
+});
 
 const loginHandle = () => {
   // 这里应该有具体的登录逻辑，这里只是模拟
-  if (username.value === 'admin' && password.value === 'admin') {
-    login('admin')
-    alert('当前以管理员身份登录')
-    router.push({ name: 'Admin' })
-  } else if (username.value === 'user' && password.value === 'user') {
-    login('user')
-    alert('当前以普通用户身份登录')
-    router.push({ name: 'User' })
+  if (username.value === "admin" && password.value === "admin") {
+    login("admin");
+    alert("当前以管理员身份登录");
+    router.push({ name: "Admin" });
+  } else if (username.value === "user" && password.value === "user") {
+    login("user");
+    alert("当前以普通用户身份登录");
+    router.push({ name: "User" });
   } else {
-    alert('用户名或密码错误')
+    alert("用户名或密码错误");
   }
-}
+};
 
 const logoutHandle = () => {
-  loginout()
-  alert('退出登录成功')
-  router.push({ name: 'Home' })
-}
+  loginout();
+  alert("退出登录成功");
+  router.push({ name: "Home" });
+};
 </script>
 
 <style scoped>

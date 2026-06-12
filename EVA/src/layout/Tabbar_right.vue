@@ -42,17 +42,18 @@
 <script lang="ts" setup>
 import useSettingStore from "@/store/modules/setting";
 import useUserStore from "@/store/modules/user";
-// import { useRoute, useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 defineOptions({
   name: "TabbarRight",
 });
-// const router = useRouter();
-// const route = useRoute();
+const router = useRouter();
+const route = useRoute();
 const settingStore = useSettingStore();
 const userStore = useUserStore();
 
 const refreshEvent = () => {
-  settingStore.refresh = !settingStore.refresh;
+  // settingStore.refresh = !settingStore.refresh;
+  settingStore.changeRefresh();
 };
 
 const fullScreen = () => {
@@ -65,8 +66,8 @@ const fullScreen = () => {
 };
 
 const logOut = async () => {
-  // await userStore.userLogOut(userStore.token);
-  // router.push({ path: "/login", query: { redirect: route.path } });
+  await userStore.userLogOut(userStore.token);
+  router.push({ path: "/login", query: { redirect: route.path } });
 };
 </script>
 
