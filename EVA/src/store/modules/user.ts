@@ -29,6 +29,7 @@ const useUserStore = defineStore("User", {
       routesMenu: constantRoutes,
       username: "",
       avatar: "",
+      btnArr: [] as string[],
     };
   },
 
@@ -56,6 +57,7 @@ const useUserStore = defineStore("User", {
       if (res.code === 200) {
         this.username = res.data.username;
         this.avatar = res.data.avatar;
+        this.btnArr = res.data.button;
 
         // 权限路由过滤
         const routeSet = new Set(res.data.routes);

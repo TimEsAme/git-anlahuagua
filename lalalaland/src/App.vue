@@ -6,7 +6,7 @@
     <!-- <Xxx :a="name" @changeA="changeA" /> -->
 
     <!-- 自定义指令控制权限按钮显示 -->
-    <!-- <Permission /> -->
+    <Permission />
 
     <!-- 全局错误处理插件 -->
     <!-- <button @click="boom">安拉花瓜!!!</button>
@@ -36,11 +36,11 @@
     <!-- <VirtualList :dataList="dataList" :itemSize="100" /> -->
 
     <!-- 动态高度 -->
-    <VirtualList_1
+    <!-- <VirtualList_1
       :dataList="dataList"
       :itemSize="100"
       :estimatedItemSize="100"
-    />
+    /> -->
   </div>
 </template>
 
@@ -56,7 +56,7 @@ import { customRef, ref } from "vue";
 // };
 
 // 自定义指令设置按钮权限
-// import Permission from "./components/Permission.vue";
+import Permission from "./components/Permission.vue";
 
 // 全局错误处理插件
 // function boom() {
@@ -69,81 +69,8 @@ import { customRef, ref } from "vue";
 
 // 树形组件
 // import Tree from "./components/Tree.vue";
-// const data = ref<any[]>([
-//   {
-//     label: "水果",
-//     checked: false,
-//     children: [
-//       {
-//         label: "苹果",
-//         checked: false,
-//         children: [
-//           { label: "红富士", checked: false },
-//           { label: "黄元帅", checked: false },
-//         ],
-//       },
-//       {
-//         label: "香蕉",
-//         checked: false,
-//         children: [{ label: "皇帝蕉", checked: false }],
-//       },
-//     ],
-//   },
-//   {
-//     label: "游戏",
-//     checked: false,
-//     children: [
-//       {
-//         label: "角色扮演",
-//         checked: false,
-//         children: [
-//           { label: "最终幻想", checked: false },
-//           { label: "巫师3", checked: false },
-//         ],
-//       },
-//       {
-//         label: "动作冒险",
-//         checked: false,
-//         children: [
-//           { label: "塞尔达传说", checked: false },
-//           { label: "刺客信条", checked: false },
-//         ],
-//       },
-//       {
-//         label: "独立游戏",
-//         checked: false,
-//         children: [{ label: "星露谷物语", checked: false }],
-//       },
-//     ],
-//   },
-//   {
-//     label: "电影",
-//     checked: false,
-//     children: [
-//       {
-//         label: "科幻",
-//         checked: false,
-//         children: [
-//           { label: "星际穿越", checked: false },
-//           { label: "盗梦空间", checked: false },
-//         ],
-//       },
-//       {
-//         label: "动画",
-//         checked: false,
-//         children: [
-//           { label: "千与千寻", checked: false },
-//           { label: "寻梦环游记", checked: false },
-//         ],
-//       },
-//       {
-//         label: "经典",
-//         checked: false,
-//         children: [{ label: "肖申克的救赎", checked: false }],
-//       },
-//     ],
-//   },
-// ]);
+// import treeData from "./mock/tree.ts";
+// const data = ref<any[]>(treeData);
 // // 处理数据,树组件要知道自己的父组件是谁
 // const initParent = (data, parent = null) => {
 //   data.forEach((e) => {
@@ -197,17 +124,17 @@ import { customRef, ref } from "vue";
 // const dataList = ref(d);
 
 // 动态虚拟列表
-import VirtualList_1 from "./components/VirtualList_1.vue";
-import { faker } from "@faker-js/faker";
-let d = [];
-for (let i = 0; i < 10000; i++) {
-  d.push({
-    id: i,
-    // 生成一个随机的句子
-    value: faker.lorem.sentences(),
-  });
-}
-const dataList = ref(d);
+// import VirtualList_1 from "./components/VirtualList_1.vue";
+// import { faker } from "@faker-js/faker";
+// let d = [];
+// for (let i = 0; i < 10000; i++) {
+//   d.push({
+//     id: i,
+//     // 生成一个随机的句子
+//     value: faker.lorem.sentences(),
+//   });
+// }
+// const dataList = ref(d);
 </script>
 
 <style>

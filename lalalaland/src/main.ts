@@ -5,33 +5,34 @@ import errorLoggers from "./plugins/ErrorLogger/error-loggers";
 import { logPlugin } from "./plugins/logPlugin.js";
 import { ObserveVisibility } from "vue3-observe-visibility";
 
+const app = createApp(App);
+
 const pinia = createPinia();
 pinia.use(logPlugin);
 
-const app = createApp(App);
-
 // 自定义指令设置按钮权限
-const u = ["write", "admin"];
+const u = ["admin"];
+
 app.directive("permission", {
   mounted(el, binding) {
-    const { value } = binding;
-    if (value && value instanceof Array) {
-      const b = value.some((e) => u.includes(e));
-      console.log(b);
+    const requiredPerms = binding.value;
 
-      if (!b) {
-        el.style.display = "none";
+    if (Array.isArray(requiredPerms)) {
+      const hasPermission = requiredPerms.some((p) => u.includes(p));
+
+      if (!hasPermission) {
+        el.parentNode?.removeChild(el);
       }
     }
   },
 });
 
+app.use(pinia);
 app.use(errorLoggers, {
   logToConsole: true,
   remotoLogging: false,
   remotoUrl: "",
 });
-app.use(pinia);
 
 app.directive("observe-visibility", ObserveVisibility);
 app.mount("#app");

@@ -24,7 +24,29 @@ function createUserList() {
         "Spu",
         "Sku",
       ],
-
+      button: [
+        "btn.User.add",
+        "btn.User.remove",
+        "btn.User.update",
+        "btn.Role.add",
+        "btn.Role.remove",
+        "btn.Role.update",
+        "btn.Permission.add",
+        "btn.Permission.remove",
+        "btn.Permission.update",
+        "btn.Category.add",
+        "btn.Category.remove",
+        "btn.Category.update",
+        "btn.Attr.add",
+        "btn.Attr.remove",
+        "btn.Attr.update",
+        "btn.Spu.add",
+        "btn.Spu.remove",
+        "btn.Spu.update",
+        "btn.Sku.add",
+        "btn.Sku.remove",
+        "btn.Sku.update",
+      ],
       token: "Admin Token",
     },
 
@@ -32,30 +54,91 @@ function createUserList() {
       userId: 2,
       avatar:
         "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
-      username: "manager",
+      username: "manager1",
       password: "123456",
-      desc: "权限管理员",
+      desc: "权限管理员1",
 
-      roles: ["权限管理员"],
+      roles: ["权限管理员1"],
 
       routes: ["home", "Acl", "User", "Role", "Permission"],
-
-      token: "Manager Token",
+      button: [
+        "btn.User.add",
+        "btn.User.remove",
+        "btn.User.update",
+        "btn.Role.add",
+        "btn.Role.remove",
+        "btn.Role.update",
+      ],
+      token: "Manager1 Token",
     },
 
     {
       userId: 3,
       avatar:
         "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
-      username: "system",
+      username: "manager2",
       password: "123456",
-      desc: "商品管理员",
+      desc: "权限管理员2",
 
-      roles: ["商品管理员"],
+      roles: ["权限管理员2"],
 
+      routes: ["home", "Acl", "User", "Role", "Permission"],
+      button: [
+        "btn.User.add",
+        "btn.User.remove",
+        "btn.User.update",
+        "btn.Role.add",
+        "btn.Role.remove",
+        "btn.Role.update",
+        "btn.Permission.add",
+        "btn.Permission.remove",
+        "btn.Permission.update",
+      ],
+      token: "Manager2 Token",
+    },
+
+    {
+      userId: 4,
+      avatar:
+        "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
+      username: "system1",
+      password: "123456",
+      desc: "商品管理员1",
+
+      roles: ["商品管理员1"],
+      button: [
+        "btn.Category.add",
+        "btn.Category.remove",
+        "btn.Category.update",
+        "btn.Attr.add",
+        "btn.Attr.remove",
+        "btn.Attr.update",
+      ],
       routes: ["home", "Product", "Trademark", "Attr", "Spu", "Sku"],
 
-      token: "System Token",
+      token: "System1 Token",
+    },
+
+    {
+      userId: 5,
+      avatar:
+        "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
+      username: "system2",
+      password: "123456",
+      desc: "商品管理员2",
+
+      roles: ["商品管理员2"],
+      button: [
+        "btn.Spu.add",
+        "btn.Spu.remove",
+        "btn.Spu.update",
+        "btn.Sku.add",
+        "btn.Sku.remove",
+        "btn.Sku.update",
+      ],
+      routes: ["home", "Product", "Trademark", "Attr", "Spu", "Sku"],
+
+      token: "System2 Token",
     },
   ];
 }
